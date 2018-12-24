@@ -1,0 +1,12 @@
+#Create stack
+aws cloudformation create-stack --stack-name id-resources --template-body file:///Users/larryoke/intelligent_draw_v1/AWS/cloudFormation/stack.yml --profile larry-dev --region eu-west-1
+
+#Describe
+aws cloudformation describe-stack-resources --stack-name id-resources --profile larry-dev
+
+
+#Delete stack
+aws cloudformation delete-stack --stack-name id-resources --profile larry-dev
+
+#ssh sample
+ ssh -i key-pair-1.pem ec2-user@34.244.101.24

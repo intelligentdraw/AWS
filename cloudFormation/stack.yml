@@ -1,0 +1,29 @@
+Resources:
+  AppNode:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-09693313102a30b2c
+      KeyName: key-pair-1
+      SecurityGroups:
+        - !Ref AppNodeSG
+      UserData: !Base64 |
+        #!/bin/bash
+        export PATH=/usr/local/bin:$PATH;
+        sudo yum update -y
+        sudo amazon-linux-extras install docker -y
+        sudo service docker start
+        sudo usermod -a -G docker ec2-user
+  AppNodeSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: for the app nodes that allow ssh, http and docker ports
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0

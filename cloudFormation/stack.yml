@@ -14,6 +14,10 @@ Resources:
         sudo amazon-linux-extras install docker -y
         sudo service docker start
         sudo usermod -a -G docker ec2-user
+        docker pull jenkins
+        mkdir jenkins
+        sudo chmod 777 jenkins
+        docker run -d -p 49001:8080 -v $PWD/jenkins:/var/jenkins_home:z -t jenkins
   AppNodeSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -22,6 +26,10 @@ Resources:
         - IpProtocol: tcp
           FromPort: '80'
           ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '49001'
+          ToPort: '49001'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '22'
